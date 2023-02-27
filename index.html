@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .calculator {
+        max-width: 300px;
+        margin: 0 auto;
+        background-color: #eee;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+      }
+
+      .calculator__screen {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        padding: 10px;
+        text-align: right;
+      }
+
+      .calculator__input {
+        width: 100%;
+        border: none;
+        font-size: 36px;
+        text-align: right;
+        outline: none;
+      }
+
+      .calculator__buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 10px;
+      }
+
+      .calculator__button {
+        font-size: 24px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+        grid-column: span 1;
+        grid-row: span 1;
+      }
+
+      .calculator__button:hover {
+        background-color: #ccc;
+      }
+
+      .calculator__button.clear {
+        grid-column: span 2;
+        background-color: #f2f2f2;
+      }
+
+      .calculator__button.backspace {
+        background-color: #f2f2f2;
+      }
+
+      .calculator__button.calculate {
+        background-color: #eeb766;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const calculator = document.createElement("div");
+      calculator.classList.add("calculator");
+      document.body.append(calculator);
+
+      const screen = document.createElement("div");
+      screen.classList.add("calculator__screen");
+      calculator.append(screen);
+
+      const input = document.createElement("input");
+      input.classList.add("calculator__input");
+      input.value = "0";
+      screen.append(input);
+
+      const buttons = document.createElement("div");
+      buttons.classList.add("calculator__buttons");
+      calculator.append(buttons);
+
+      const buttonValues = [
+        ["C", "clear"],
+        ["←", "backspace"],
+        ["÷"],
+        ["7"],
+        ["8"],
+        ["9"],
+        ["×"],
+        ["4"],
+        ["5"],
+        ["6"],
+        ["-"],
+        ["1"],
+        ["2"],
+        ["3"],
+        ["+"],
+        ["0"],
+        [".", "dote"],
+        ["=", "calculate"],
+      ];
+
+      function createButton(values) {
+        values.forEach((value) => {
+          const button = document.createElement("button");
+          button.classList.add("calculator__button");
+          button.textContent = value[0];
+          if (value[1]) {
+            button.classList.add(value[1]);
+          } else {
+            button.classList.add(value[0]);
+          }
+          buttons.append(button);
+        });
+      }
+
+      createButton(buttonValues);
+
+      buttons.addEventListener("click", function (event) {
+        const target = event.target;
+        if (target.matches("button")) {
+          const value = target.textContent;
+          switch (value) {
+            case "C":
+              input.value = "0";
+              break;
+            case "←":
+              input.value = input.value.slice(0, -1);
+              if (input.value === "") {
+                input.value = "0";
+              }
+              break;
+            case "÷":
+            case "×":
+            case "-":
+            case "+":
+            case ".":
+              input.value += value;
+              break;
+            case "=":
+              input.value = eval(input.value);
+              break;
+            default:
+              if (input.value === "0") {
+                input.value = value;
+              } else {
+                input.value += value;
+              }
+              break;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
